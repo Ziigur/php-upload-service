@@ -21,9 +21,10 @@ $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 $newName = uniqid() . '.' . $ext;
 $targetFile = $uploadDir . $newName;
 
-if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-    echo "File uploaded successfully\n";
-} else {
+if (!move_uploaded_file($file['tmp_name'], $targetFile)) {
     http_response_code(500);
     echo "Failed to upload file\n";
+    exit;
 }
+
+echo "File uploaded successfully\n";
