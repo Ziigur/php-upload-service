@@ -29,11 +29,12 @@ if (!is_dir($uploadDir)) {
 
 $file = $_FILES['file'];
 $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+$fileSize = $_FILES['file']['size'];
 $newName = uniqid() . '.' . $ext;
 $targetFile = $uploadDir . $newName;
 
 $maxSize = 100 * 1024 * 1024; // 100MB
-if (getDirectorySize($uploadDir) > $maxSize) {
+if (getDirectorySize($uploadDir) + $fileSize > $maxSize) {
     http_response_code(500);
     echo "Storage limit reached\n";
     exit;
