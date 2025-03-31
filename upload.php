@@ -32,6 +32,13 @@ $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 $newName = uniqid() . '.' . $ext;
 $targetFile = $uploadDir . $newName;
 
+$maxSize = 100 * 1024 * 1024; // 100MB
+if (getDirectorySize($uploadDir) > $maxSize) {
+    http_response_code(500);
+    echo "Storage limit reached\n";
+    exit;
+}
+
 if (!move_uploaded_file($file['tmp_name'], $targetFile)) {
     http_response_code(500);
     echo "Failed to upload file\n";
@@ -48,3 +55,9 @@ $output = array(
 );
 echo json_encode($output, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 echo "\n";
+
+
+function getDirectorySize($dir) {
+    $size = shell_exec("du -sb " . escapeshellarg($dir) . " | cut -f1");
+    return (int)trim($size);
+}
