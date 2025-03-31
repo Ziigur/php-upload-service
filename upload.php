@@ -27,4 +27,9 @@ if (!move_uploaded_file($file['tmp_name'], $targetFile)) {
     exit;
 }
 
+$host = $_SERVER['HTTP_HOST']; // Get the server host
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http"; // Handle HTTP/HTTPS
+$fullUrl = $protocol . "://" . $host . "/uploads/" . urlencode($newName);
+
 echo "File uploaded successfully\n";
+echo "File URL: $fullUrl\n";
