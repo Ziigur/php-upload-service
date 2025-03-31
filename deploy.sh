@@ -10,4 +10,4 @@ if [ -f .env.local ]; then
   export $(grep -v '^#' .env.local | xargs)
 fi
 
-scp index.php $SSH_USER@$SSH_HOST:$SSH_PATH
+scp index.php upload.php $SSH_USER@$SSH_HOST:$SSH_PATH
