@@ -21,6 +21,8 @@ if (!isset($_FILES['file'])) {
     exit;
 }
 
+$env = loadEnv(__DIR__ . '/.env');
+
 $uploadDir = __DIR__ . "/uploads/";
 
 if (!is_dir($uploadDir)) {
@@ -33,7 +35,7 @@ $fileSize = $_FILES['file']['size'];
 $newName = uniqid() . '.' . $ext;
 $targetFile = $uploadDir . $newName;
 
-$maxSize = 100 * 1024 * 1024; // 100MB
+$maxSize = $env["MAX_STORAGE"] ?? 100 * 1024 * 1024; // 100MB
 if (getDirectorySize($uploadDir) + $fileSize > $maxSize) {
     http_response_code(500);
     echo "Storage limit reached\n";
@@ -61,4 +63,11 @@ echo "\n";
 function getDirectorySize($dir) {
     $size = shell_exec("du -sb " . escapeshellarg($dir) . " | cut -f1");
     return (int)trim($size);
+}
+
+function loadEnv($file) {
+    if (!file_exists($file)) {
+        return [];
+    }
+    return parse_ini_file($file);
 }
