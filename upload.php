@@ -15,3 +15,15 @@ $uploadDir = __DIR__ . "/uploads/";
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0777, true);
 }
+
+$file = $_FILES['file'];
+$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+$newName = uniqid() . '.' . $ext;
+$targetFile = $uploadDir . $newName;
+
+if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+    echo "File uploaded successfully\n";
+} else {
+    http_response_code(500);
+    echo "Failed to upload file\n";
+}
