@@ -4,3 +4,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo "Use POST to upload files";
     exit;
 }
+if (!isset($_FILES['file'])) {
+    http_response_code(400);
+    echo "No file uploaded";
+    exit;
+}
