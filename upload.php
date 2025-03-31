@@ -31,5 +31,9 @@ $host = $_SERVER['HTTP_HOST']; // Get the server host
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http"; // Handle HTTP/HTTPS
 $fullUrl = $protocol . "://" . $host . "/uploads/" . urlencode($newName);
 
-echo "File uploaded successfully\n";
-echo "File URL: $fullUrl\n";
+header('Content-Type: application/json');
+$output = array(
+    "url" => $fullUrl
+);
+echo json_encode($output, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+echo "\n";
